@@ -14,11 +14,11 @@
       when: cuda_installed.rc == 1
 
     - name: Install CUDA
-      apt: deb="/tmp/cuda-repo-ubuntu1404_7.5-18_amd64.deb"
+      apt-get: deb="/tmp/cuda-repo-ubuntu1404_7.5-18_amd64.deb"
       when: cuda_installed.rc == 1
       
     - name: updates a server
-      apt: update_cache=yes
+      apt-get: update_cache=yes
       when: cuda_installed.rc == 1
       
     - name: register running kernel version
@@ -27,7 +27,7 @@
       changed_when: false
       
     - name: Install list of packages
-      apt: name={{item}} state=installed
+      apt-get: name={{item}} state=installed
       with_items:
         - opencl-headers
         - build-essential
