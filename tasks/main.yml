@@ -40,7 +40,7 @@
         - libopencv-core-dev
         - libopencv-highgui-dev
         - libsnappy-dev
-        - libsnappy1
+        - libsnappy1v5
         - libatlas-base-dev
         - cmake
         - libstdc++6-4.8-dbg
