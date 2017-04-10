@@ -44,7 +44,7 @@
         - libatlas-base-dev
         - cmake
         - libstdc++6-4.8-dbg
-        - libgoogle-glog0
+        - libgoogle-glog0v5
         - libgoogle-glog-dev
         - libgflags-dev
         - liblmdb-dev
