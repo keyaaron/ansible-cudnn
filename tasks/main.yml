@@ -7,20 +7,25 @@
       failed_when: cuda_installed.rc > 1
       changed_when: cuda_installed.rc == 1
       
-    - name: Download CUDA Repo Deb
+    - name: Download CUDA Repo
       get_url:
         url="https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb"
         dest="/tmp/cuda-8-0_8.0.61-1_amd64.deb"
       when: cuda_installed.rc == 1
 
-    - name: Install CUDA Repo Deb
+    - name: Install CUDA Repo
+      become: yes
       apt: deb="/tmp/cuda-8-0_8.0.61-1_amd64.deb"
+      when: cuda_installed.rc == 1
+      
+    - name: updates a server
+      become: yes
+      apt: update_cache=yes
       when: cuda_installed.rc == 1
 
     - name: Install CUDA
-      apt: 
-        name: cuda
-        update_cache: yes
+      become: yes
+      apt: name=cuda
       when: cuda_installed.rc == 1
       
     - name: register running kernel version
@@ -29,6 +34,7 @@
       changed_when: false
       
     - name: Install list of packages
+      become: yes
       apt: name={{item}} state=installed
       with_items:
         - opencl-headers
@@ -68,19 +74,23 @@
       unarchive: src=/tmp/cudnn-8.0-linux-x64-v5.1.tgz dest=/tmp/cudnn-8.0-linux-x64-v5.1 copy=no
     
     - name: Copy cuDNN headers from /tmp/cudnn-8.0-linux-x64-v5.1
+      become: yes
       command: "cp /tmp/cudnn-8.0-linux-x64-v5.1/cuda/include/cudnn.h /usr/local/cuda/include"
       args:
         creates: /usr/local/cuda/include/cudnn.h
       
     - name: Copy cuDNN libs from /tmp/cudnn-8.0-linux-x64-v5.1
+      become: tes
       shell: "cp /tmp/cudnn-8.0-linux-x64-v5.1/cuda/lib64/libcudnn* /usr/local/cuda/lib64/"
       args:
         creates: /usr/local/cuda/lib64/libcudnn.so.8.0
 
     - name: Copy cuDNN libs from /tmp/cudnn-8.0-linux-x64-v5.1
+      become: yes
       shell: "cp /tmp/cudnn-8.0-linux-x64-v5.1/cuda/lib64/libcudnn* /usr/local/cuda/lib64/"
       args:
         creates: /usr/local/cuda/lib64/libcudnn.so.7.5
       
     - name: Set permissions on cuDNN files
+      become: yes
       shell: "chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*"
