@@ -18,14 +18,16 @@
       apt: deb="/tmp/cuda-8-0_8.0.61-1_amd64.deb"
       when: cuda_installed.rc == 1
       
-    - name: updates a server
+    - name: Force Install Deps
       become: yes
-      apt: update_cache=yes
+      apt: force=yes
       when: cuda_installed.rc == 1
 
     - name: Install CUDA
       become: yes
-      apt: name=cuda
+      apt: 
+        name: cuda
+        update_cache: yes
       when: cuda_installed.rc == 1
       
     - name: register running kernel version
